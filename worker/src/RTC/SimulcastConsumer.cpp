@@ -640,12 +640,12 @@ namespace RTC
 				break;
 		}
 
-		// If consumer.rtpParameters.encodings[0].maxBitrate was given and it's
+/*		// If consumer.rtpParameters.encodings[0].maxBitrate was given and it's
 		// greater than computed one, then use it.
 		auto maxBitrate = this->rtpParameters.encodings[0].maxBitrate;
 
 		if (maxBitrate > desiredBitrate)
-			desiredBitrate = maxBitrate;
+			desiredBitrate = maxBitrate;*/
 
 		return desiredBitrate;
 	}
