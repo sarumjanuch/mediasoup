@@ -143,8 +143,8 @@ void TrendlineEstimator::Update(double recv_delta_ms,
     accumulated_delay_ += delta_ms;
     // BWE_TEST_LOGGING_PLOT(1, "accumulated_delay_ms", arrival_time_ms,
                           // accumulated_delay_);
-    // smoothed_delay_ = smoothing_coef_ * smoothed_delay_ +
-                      // (1 - smoothing_coef_) * accumulated_delay_;
+    /*smoothed_delay_ = smoothing_coef_ * smoothed_delay_ +
+                      (1 - smoothing_coef_) * accumulated_delay_;*/
     // MS_NOTE: Apply WEMA to the current delta_ms. Don't consider the
     // accumulated delay. Tests show it behaves more robustly upon delta peaks.
     smoothed_delay_ = smoothing_coef_ * delta_ms +

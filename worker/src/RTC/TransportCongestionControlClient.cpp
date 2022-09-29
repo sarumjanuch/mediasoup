@@ -16,7 +16,7 @@ namespace RTC
 	// TransportCongestionControlClient.hpp and exposed publicly.
 	static constexpr float MaxBitrateMarginFactor{ 0.1f };
 	static constexpr float MaxBitrateIncrementFactor{ 1.35f };
-	static constexpr float MaxPaddingBitrateFactor{ 0.85f };
+	static constexpr float MaxPaddingBitrateFactor{ 0.05f };
 	static constexpr uint64_t AvailableBitrateEventInterval{ 1000u }; // In ms.
 	static constexpr size_t PacketLossHistogramLength{ 24 };
 
@@ -350,7 +350,7 @@ namespace RTC
 		}
 
 		this->rtpTransportControllerSend->SetAllocatedSendBitrateLimits(
-		  this->bitrates.minBitrate, this->bitrates.maxPaddingBitrate, this->bitrates.maxBitrate);
+		  this->bitrates.minBitrate, 1000000, this->bitrates.maxBitrate);
 
 		webrtc::TargetRateConstraints constraints;
 

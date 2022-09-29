@@ -383,10 +383,10 @@ executable(
   cpp_args: cpp_args + [
     '-g',
     '-O0',
-    '-fsanitize=address,fuzzer',
+    '-fsanitize=address',
     '-DMS_LOG_STD',
   ],
   link_args: [
-    '-fsanitize=address,fuzzer',
+    '-fsanitize=address',
   ],
 )

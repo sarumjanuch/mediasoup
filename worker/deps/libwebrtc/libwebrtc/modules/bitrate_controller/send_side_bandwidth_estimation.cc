@@ -9,7 +9,7 @@
  */
 
 #define MS_CLASS "webrtc::SendSideBandwidthEstimation"
-// #define MS_LOG_DEV_LEVEL 3
+#define MS_LOG_DEV_LEVEL 3
 
 #include "modules/bitrate_controller/send_side_bandwidth_estimation.h"
 #include "modules/remote_bitrate_estimator/include/bwe_defines.h"
@@ -391,7 +391,8 @@ void SendSideBandwidthEstimation::UpdatePacketsLost(int packets_lost,
       return;
 
     has_decreased_since_last_fraction_loss_ = false;
-    int64_t lost_q8 = lost_packets_since_last_loss_update_ << 8;
+    int64_t lost_q8 = std::max<int64_t>(lost_packets_since_last_loss_update_ + packets_lost,
+                                        0) << 8;
     int64_t expected = expected_packets_since_last_loss_update_;
     last_fraction_loss_ = std::min<int>(lost_q8 / expected, 255);
 

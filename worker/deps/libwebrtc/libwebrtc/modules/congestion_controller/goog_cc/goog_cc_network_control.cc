@@ -9,7 +9,7 @@
  */
 
 #define MS_CLASS "webrtc::GoogCcNetworkController"
-// #define MS_LOG_DEV_LEVEL 3
+#define MS_LOG_DEV_LEVEL 3
 
 #include "modules/congestion_controller/goog_cc/goog_cc_network_control.h"
 #include "api/units/time_delta.h"
@@ -41,7 +41,13 @@ constexpr TimeDelta kLossUpdateInterval = TimeDelta::Millis<1000>();
 // the number of bytes that can be transmitted per interval.
 // Increasing this factor will result in lower delays in cases of bitrate
 // overshoots from the encoder.
-const float kDefaultPaceMultiplier = 2.5f;
+constexpr float kDefaultPaceMultiplier = 2.5f;
+
+// If the probe result is far below the current throughput estimate
+// it's unlikely that the probe is accurate, so we don't want to drop too far.
+// However, if we actually are overusing, we want to drop to something slightly
+// below the current throughput estimate to drain the network queues.
+constexpr double kProbeDropThroughputFraction = 0.85;
 
 int64_t GetBpsOrDefault(const absl::optional<DataRate>& rate,
                         int64_t fallback_bps) {
@@ -160,6 +166,7 @@ NetworkControlUpdate GoogCcNetworkController::OnNetworkRouteChange(
   bandwidth_estimation_->OnRouteChange();
   probe_controller_->Reset(msg.at_time.ms());
   NetworkControlUpdate update;
+  MS_DEBUG_DEV("----GoogCcNetworkController::OnNetworkRouteChange ResetConstraints");
   update.probe_cluster_configs = ResetConstraints(msg.constraints);
   MaybeTriggerOnNetworkChanged(&update, msg.at_time);
   return update;
@@ -169,6 +176,7 @@ NetworkControlUpdate GoogCcNetworkController::OnProcessInterval(
     ProcessInterval msg) {
   NetworkControlUpdate update;
   if (initial_config_) {
+      MS_DEBUG_DEV("----GoogCcNetworkController::OnProcessInterval ResetConstraints");
     update.probe_cluster_configs =
         ResetConstraints(initial_config_->constraints);
     update.pacer_config = GetPacingRates(msg.at_time);
@@ -313,6 +321,7 @@ NetworkControlUpdate GoogCcNetworkController::OnStreamsConfig(
 NetworkControlUpdate GoogCcNetworkController::OnTargetRateConstraints(
     TargetRateConstraints constraints) {
   NetworkControlUpdate update;
+    MS_DEBUG_DEV("----GoogCcNetworkController::OnTargetRateConstraints ResetConstraints");
   update.probe_cluster_configs = ResetConstraints(constraints);
   MaybeTriggerOnNetworkChanged(&update, constraints.at_time);
   return update;
