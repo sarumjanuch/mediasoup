@@ -595,7 +595,7 @@ bool LossBasedBweV2::IsConfigValid() const {
     valid = false;
   }
   if (config_->rampup_acceleration_maxout_time <= TimeDelta::Zero()) {
-		MS_WARN_TAG(bwe, "The rampup acceleration maxout time must be above zero: %ld ",
+		MS_WARN_TAG(bwe, "The rampup acceleration maxout time must be above zero: %" PRIi64 "",
 			          config_->rampup_acceleration_maxout_time.seconds());
     valid = false;
   }
@@ -644,7 +644,7 @@ bool LossBasedBweV2::IsConfigValid() const {
   }
   if (config_->inherent_loss_upper_bound_bandwidth_balance <=
       DataRate::Zero()) {
-			MS_WARN_TAG(bwe, "The inherent loss upper bound bandwidth balance must be positive: %ld",
+			MS_WARN_TAG(bwe, "The inherent loss upper bound bandwidth balance must be positive: %" PRIi64 "",
 			          config_->inherent_loss_upper_bound_bandwidth_balance.bps());
     valid = false;
   }
