@@ -474,7 +474,7 @@ absl::optional<LossBasedBweV2::Config> LossBasedBweV2::CreateConfig(
   if (!enabled.Get()) {
     return config;
   }
-  config.reset();
+  //config.reset();
   config->bandwidth_rampup_upper_bound_factor =
       bandwidth_rampup_upper_bound_factor.Get();
   config->rampup_acceleration_max_factor = rampup_acceleration_max_factor.Get();
@@ -986,7 +986,7 @@ void LossBasedBweV2::CalculateInstantUpperBound(DataRate sending_rate) {
 			MS_DEBUG_DEV("Resetting");
 		}
 	}
-	events.Emit<LOSS_EVENTS::INSTANT_LOSS>({.average_loss = average_reported_loss_ratio});
+	events.Emit<LOSS_EVENTS::INSTANT_LOSS>({average_reported_loss_ratio});
 	if (average_reported_loss_ratio > config_->instant_upper_bound_loss_offset)
 	{
 		MS_DEBUG_DEV(

@@ -52,6 +52,7 @@ struct LOSS_EVENTS {
 	// With some tweaks this could also be made into struct Args<INCREASE>.
 	template<class T> struct Event<INSTANT_LOSS, T> {
 		struct Args {
+			Args(double average_loss) : average_loss(average_loss) {};
 			double average_loss;
 		};
 	};
@@ -59,6 +60,7 @@ struct LOSS_EVENTS {
 	template<class T>
 	struct Event<INHERENT_LOSS, T> {
 		struct Args {
+			Args(float inherent_loss) : inherent_loss(inherent_loss) {};
 			float inherent_loss;
 		};
 	};
