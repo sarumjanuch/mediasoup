@@ -3,6 +3,7 @@
 #include <functional>
 #include <iostream>
 #include <type_traits>
+#include <memory>
 
 #ifndef TYPESAFEEVENTEMITTER_EVENTEMITTER_HPP
 #define TYPESAFEEVENTEMITTER_EVENTEMITTER_HPP

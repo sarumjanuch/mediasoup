@@ -43,22 +43,21 @@ struct LOSS_EVENTS {
 			               // of enum elements.
 	};
 
-	template<EVENTS T>
+	template<EVENTS T, class = void>
 	struct Event {
 		// Leave empty, this causes a compile error for unspecialized EVENT types.
 	};
 
 	// For each event type you need to define a struct with a substruct Args.
 	// With some tweaks this could also be made into struct Args<INCREASE>.
-	template<>
-	struct Event<INSTANT_LOSS> {
+	template<class T> struct Event<INSTANT_LOSS, T> {
 		struct Args {
 			double average_loss;
 		};
 	};
 
-	template<>
-	struct Event<INHERENT_LOSS> {
+	template<class T>
+	struct Event<INHERENT_LOSS, T> {
 		struct Args {
 			float inherent_loss;
 		};
