@@ -90,10 +90,10 @@ double GetLossProbability(double inherent_loss,
     inherent_loss = std::min(std::max(inherent_loss, 0.0), 1.0);
   }
   if (!sending_rate.IsFinite()) {
-    MS_WARN_TAG(bwe, "The sending rate must be finite: %ld", sending_rate.bps());
+    MS_WARN_TAG(bwe, "The sending rate must be finite: %" PRIi64 "", sending_rate.bps());
   }
   if (!loss_limited_bandwidth.IsFinite()) {
-    MS_WARN_TAG(bwe, "The loss limited bandwidth must be finite: %ld", loss_limited_bandwidth.bps());
+    MS_WARN_TAG(bwe, "The loss limited bandwidth must be finite: %" PRIi64 "", loss_limited_bandwidth.bps());
   }
 
   double loss_probability = inherent_loss;
