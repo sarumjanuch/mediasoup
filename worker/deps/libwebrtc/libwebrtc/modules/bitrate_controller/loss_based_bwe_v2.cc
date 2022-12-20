@@ -474,7 +474,7 @@ absl::optional<LossBasedBweV2::Config> LossBasedBweV2::CreateConfig(
   if (!enabled.Get()) {
     return config;
   }
-  config.emplace();
+  config.reset();
   config->bandwidth_rampup_upper_bound_factor =
       bandwidth_rampup_upper_bound_factor.Get();
   config->rampup_acceleration_max_factor = rampup_acceleration_max_factor.Get();
