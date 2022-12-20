@@ -243,7 +243,7 @@ SendSideBandwidthEstimation::SendSideBandwidthEstimation(
         min_bitrate_configured_, max_bitrate_configured_);
 		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::INSTANT_LOSS>(
 			[](const auto &args){
-				MS_DEBUG_DEV("Average reported ratio is %ld": args.average_loss);
+				MS_DEBUG_DEV("Average reported ratio is: %f", args.average_loss);
 		});
   }
 }
