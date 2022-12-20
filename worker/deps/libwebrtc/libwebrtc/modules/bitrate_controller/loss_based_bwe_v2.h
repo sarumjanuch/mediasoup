@@ -15,14 +15,15 @@
 #include <deque>
 #include <vector>
 
+#include "EventEmitter.h"
 #include "absl/types/optional.h"
 #include "api/network_state_predictor.h"
 #include "api/transport/network_types.h"
+#include "api/transport/webrtc_key_value_config.h"
 #include "api/units/data_rate.h"
 #include "api/units/data_size.h"
 #include "api/units/time_delta.h"
 #include "api/units/timestamp.h"
-#include "api/transport/webrtc_key_value_config.h"
 
 namespace webrtc {
 
@@ -32,6 +33,36 @@ enum class LossBasedState {
   kIncreasing = 0,
   kDecreasing = 1,
   kDelayBasedEstimate = 2
+};
+
+struct LOSS_EVENTS {
+	enum EVENTS {
+		INSTANT_LOSS,
+		INHERENT_LOSS,
+		NUM_EVENT_TYPES,// This must be last, it's a trick for counting the number
+			               // of enum elements.
+	};
+
+	template<EVENTS T>
+	struct Event {
+		// Leave empty, this causes a compile error for unspecialized EVENT types.
+	};
+
+	// For each event type you need to define a struct with a substruct Args.
+	// With some tweaks this could also be made into struct Args<INCREASE>.
+	template<>
+	struct Event<INSTANT_LOSS> {
+		struct Args {
+			double average_loss;
+		};
+	};
+
+	template<>
+	struct Event<INHERENT_LOSS> {
+		struct Args {
+			float inherent_loss;
+		};
+	};
 };
 
 class LossBasedBweV2 {
@@ -66,6 +97,7 @@ class LossBasedBweV2 {
       BandwidthUsage delay_detector_state,
 			absl::optional<DataRate> probe_bitrate,
 		  DataRate upper_link_capacity);
+	EventEmitter<LOSS_EVENTS> events;
 
  private:
   struct ChannelParameters {

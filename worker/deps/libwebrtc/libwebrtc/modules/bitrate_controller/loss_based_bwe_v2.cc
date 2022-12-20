@@ -986,6 +986,7 @@ void LossBasedBweV2::CalculateInstantUpperBound(DataRate sending_rate) {
 			MS_DEBUG_DEV("Resetting");
 		}
 	}
+	events.Emit<LOSS_EVENTS::INSTANT_LOSS>({.average_loss = average_reported_loss_ratio});
 	if (average_reported_loss_ratio > config_->instant_upper_bound_loss_offset)
 	{
 		MS_DEBUG_DEV(

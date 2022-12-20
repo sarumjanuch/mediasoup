@@ -9,7 +9,7 @@
  */
 
 #define MS_CLASS "webrtc::SendSideBandwidthEstimation"
-// #define MS_LOG_DEV_LEVEL 3
+#define MS_LOG_DEV_LEVEL 3
 
 #include "modules/bitrate_controller/send_side_bandwidth_estimation.h"
 #include "modules/remote_bitrate_estimator/include/bwe_defines.h"
@@ -241,6 +241,10 @@ SendSideBandwidthEstimation::SendSideBandwidthEstimation(
   if (LossBasedBandwidthEstimatorV2Enabled()) {
     loss_based_bandwidth_estimator_v2_.SetMinMaxBitrate(
         min_bitrate_configured_, max_bitrate_configured_);
+		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::INSTANT_LOSS>(
+			[](const auto &args){
+				MS_DEBUG_DEV("Average reported ratio is %ld": args.average_loss);
+		});
   }
 }
 
