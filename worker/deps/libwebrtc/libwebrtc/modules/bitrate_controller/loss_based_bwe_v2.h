@@ -15,7 +15,7 @@
 #include <deque>
 #include <vector>
 
-#include "EventEmitter.h"
+#include "EventEmitter.hpp"
 #include "absl/types/optional.h"
 #include "api/network_state_predictor.h"
 #include "api/transport/network_types.h"
