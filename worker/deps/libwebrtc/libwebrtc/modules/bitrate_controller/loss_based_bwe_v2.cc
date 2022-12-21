@@ -345,6 +345,8 @@ void LossBasedBweV2::UpdateBandwidthEstimate(
                  current_estimate_.loss_limited_bandwidth *
                      config_->max_increase_factor);
     recovering_after_loss_timestamp_ = last_send_time_most_recent_observation_;
+
+		events.Emit<LOSS_EVENTS::INHERENT_LOSS>({current_estimate_.inherent_loss});
   }
 }
 
@@ -470,11 +472,11 @@ absl::optional<LossBasedBweV2::Config> LossBasedBweV2::CreateConfig(
                     key_value_config->Lookup("WebRTC-Bwe-LossBasedBweV2"));
   }
 
-  absl::optional<Config> config;
+  std::optional<Config> config;
   if (!enabled.Get()) {
     return config;
   }
-  //config.reset();
+	config.emplace();
   config->bandwidth_rampup_upper_bound_factor =
       bandwidth_rampup_upper_bound_factor.Get();
   config->rampup_acceleration_max_factor = rampup_acceleration_max_factor.Get();
@@ -1206,6 +1208,11 @@ bool LossBasedBweV2::PushBackObservation(
       observation;
 
   partial_observation_ = PartialObservation();
+
+  events.Emit<LOSS_EVENTS::OBSERVATION>({ observation.num_packets,
+		                                      observation.num_lost_packets,
+		                                      observation.num_received_packets,
+		                                      observation.sending_rate.bps() });
 
   CalculateInstantUpperBound(sending_rate);
 

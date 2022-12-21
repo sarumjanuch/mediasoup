@@ -46,7 +46,7 @@ private:
 public:
 	EventEmitter() = default;
 
-	template<EVENTS T>
+	template<EVENTS T, class = void>
 	void Subscribe(const typename HandlerStorage<T>::HandlerType handler)
 	{
 		handlers_[static_cast<std::size_t>(T)] = std::make_unique<HandlerStorage<T>>(handler);
@@ -56,7 +56,11 @@ public:
 	template<EVENTS T>
 	void Emit(const typename HandlerStorage<T>::EventArgsType& args)
 	{
-		reinterpret_cast<HandlerStorage<T>*>(handlers_[static_cast<std::size_t>(T)].get())->handler_(args);
+		auto handler = handlers_[static_cast<std::size_t>(T)].get();
+		if (handler) {
+			reinterpret_cast<HandlerStorage<T>*>(handler)->handler_(args);
+		}
+
 	}
 
 	std::array<std::unique_ptr<HandlerStorageBase>, static_cast<std::size_t>(EVENTS::NUM_EVENT_TYPES)> handlers_;

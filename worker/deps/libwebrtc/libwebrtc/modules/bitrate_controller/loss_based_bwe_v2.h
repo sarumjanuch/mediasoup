@@ -39,6 +39,7 @@ struct LOSS_EVENTS {
 	enum EVENTS {
 		INSTANT_LOSS,
 		INHERENT_LOSS,
+		OBSERVATION,
 		NUM_EVENT_TYPES,// This must be last, it's a trick for counting the number
 			               // of enum elements.
 	};
@@ -50,7 +51,8 @@ struct LOSS_EVENTS {
 
 	// For each event type you need to define a struct with a substruct Args.
 	// With some tweaks this could also be made into struct Args<INCREASE>.
-	template<class T> struct Event<INSTANT_LOSS, T> {
+	template<class T>
+	struct Event<INSTANT_LOSS, T> {
 		struct Args {
 			Args(double average_loss) : average_loss(average_loss) {};
 			double average_loss;
@@ -60,8 +62,30 @@ struct LOSS_EVENTS {
 	template<class T>
 	struct Event<INHERENT_LOSS, T> {
 		struct Args {
-			Args(float inherent_loss) : inherent_loss(inherent_loss) {};
-			float inherent_loss;
+			Args(double inherent_loss) : inherent_loss(inherent_loss) {};
+			Args() = delete;
+			double inherent_loss;
+		};
+	};
+
+	template<class T>
+	struct Event<OBSERVATION, T> {
+		struct Args {
+			Args(
+				int num_packets,
+				int num_lost_packets,
+				int num_received_packets,
+				int64_t sending_rate
+				) :
+				  num_packets(num_packets),
+				  num_lost_packets(num_lost_packets),
+				  num_received_packets(num_received_packets),
+				  sending_rate(DataRate::bps(sending_rate))
+				  {};
+			int num_packets;
+			int num_lost_packets;
+			int num_received_packets;
+			DataRate sending_rate;
 		};
 	};
 };
