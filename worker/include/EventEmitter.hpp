@@ -7,7 +7,6 @@
 
 #ifndef MS_TYPE_SAFE_EVENTEMITTER_HPP
 #define MS_TYPE_SAFE_EVENTEMITTER_HPP
-
 // This is the event emitter class.
 template<typename EventsType>
 struct EventEmitter
@@ -31,7 +30,7 @@ private:
 	template<EVENTS T>
 	struct HandlerStorage : public HandlerStorageBase
 	{
-		using EventArgsType = typename EventsType::template Event<T>::Args;
+		using EventArgsType = typename EventsType::template EventImpl<T>::Args;
 		using HandlerType   = std::function<void(const EventArgsType&)>;
 
 		HandlerStorage(HandlerType handler) : handler_(handler)
@@ -46,7 +45,7 @@ private:
 public:
 	EventEmitter() = default;
 
-	template<EVENTS T, class = void>
+	template<EVENTS T>
 	void Subscribe(const typename HandlerStorage<T>::HandlerType handler)
 	{
 		handlers_[static_cast<std::size_t>(T)] = std::make_unique<HandlerStorage<T>>(handler);
@@ -58,9 +57,7 @@ public:
 	{
 		auto handler = handlers_[static_cast<std::size_t>(T)].get();
 		if (handler)
-		{
 			reinterpret_cast<HandlerStorage<T>*>(handler)->handler_(args);
-		}
 	}
 
 	std::array<std::unique_ptr<HandlerStorageBase>, static_cast<std::size_t>(EVENTS::NUM_EVENT_TYPES)> handlers_;

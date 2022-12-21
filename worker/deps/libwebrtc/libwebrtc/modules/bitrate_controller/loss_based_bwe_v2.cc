@@ -1209,10 +1209,10 @@ bool LossBasedBweV2::PushBackObservation(
 
   partial_observation_ = PartialObservation();
 
-  events.Emit<LOSS_EVENTS::OBSERVATION>({ observation.num_packets,
+  events.Emit<LOSS_EVENTS::EVENTS::OBSERVATION>({ observation.num_packets,
 		                                      observation.num_lost_packets,
 		                                      observation.num_received_packets,
-		                                      observation.sending_rate.bps() });
+		                                      observation.sending_rate });
 
   CalculateInstantUpperBound(sending_rate);
 

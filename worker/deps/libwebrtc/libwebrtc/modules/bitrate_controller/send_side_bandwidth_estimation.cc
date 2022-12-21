@@ -241,15 +241,15 @@ SendSideBandwidthEstimation::SendSideBandwidthEstimation(
   if (LossBasedBandwidthEstimatorV2Enabled()) {
     loss_based_bandwidth_estimator_v2_.SetMinMaxBitrate(
         min_bitrate_configured_, max_bitrate_configured_);
-		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::INSTANT_LOSS>(
+		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::EVENTS::INSTANT_LOSS>(
 			[](const auto &args){
 				MS_DEBUG_DEV("Average reported ratio is: %f", args.average_loss);
 		});
-		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::INHERENT_LOSS>(
+		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::EVENTS::INHERENT_LOSS>(
 			[](const auto &args){
 				MS_DEBUG_DEV("Inherent loss percent is: %f", args.inherent_loss);
 			});
-		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::OBSERVATION>(
+		loss_based_bandwidth_estimator_v2_.events.Subscribe<LOSS_EVENTS::EVENTS::OBSERVATION>(
 			[](const auto &args){
 				MS_DEBUG_DEV("Observation packets %d, received %d, loss %d sending rate %lld",
 				             args.num_packets,
