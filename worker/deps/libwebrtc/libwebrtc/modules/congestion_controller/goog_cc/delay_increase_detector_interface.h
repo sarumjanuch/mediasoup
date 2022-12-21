@@ -10,14 +10,37 @@
 #ifndef MODULES_CONGESTION_CONTROLLER_GOOG_CC_DELAY_INCREASE_DETECTOR_INTERFACE_H_
 #define MODULES_CONGESTION_CONTROLLER_GOOG_CC_DELAY_INCREASE_DETECTOR_INTERFACE_H_
 
+#include "EventEmitter.hpp"
 #include "modules/remote_bitrate_estimator/include/bwe_defines.h"
 
 #include <stdint.h>
 
 namespace webrtc {
 
+	template <int T>
+	struct TrendlineEvent {};
+	struct TRENDLINE_EVENTS {
+		enum EVENTS
+		{
+			SLOPE_UPDATE,
+			NUM_EVENT_TYPES
+		};
+
+		template <EVENTS T>
+		struct EventImpl : public TrendlineEvent<static_cast<int>(T)> {};
+	};
+
+	template<>
+	struct TrendlineEvent<TRENDLINE_EVENTS::SLOPE_UPDATE> {
+		struct Args{
+			double slope;
+			double r_squared;
+		};
+	};
+
 class DelayIncreaseDetectorInterface {
  public:
+	 EventEmitter<TRENDLINE_EVENTS> events;
   DelayIncreaseDetectorInterface() {}
   virtual ~DelayIncreaseDetectorInterface() {}
 

@@ -255,6 +255,9 @@ void TrendlineEstimator::UpdateTrendline(double recv_delta_ms,
     //   trend == 0    ->  the delay does not change
     //   trend < 0     ->  the delay decreases, queues are being emptied
 		result = LinearFitSlope(delay_hist_).value_or(trend);
+
+		events.Emit<TRENDLINE_EVENTS::SLOPE_UPDATE>({result.slope, result.r_squared});
+
 		r_squared_hist_.emplace_back(result.r_squared);
 		if (r_squared_hist_.size() > settings_.window_size)
 			r_squared_hist_.pop_front();

@@ -27,23 +27,6 @@
 
 namespace webrtc
 {
-	template <int T>
-	struct Event {};
-
-	struct LOSS_EVENTS {
-		enum EVENTS
-		{
-			INSTANT_LOSS,
-			INHERENT_LOSS,
-			OBSERVATION,
-			NUM_EVENT_TYPES, // This must be last, it's a trick for counting the number
-			                 // of enum elements.
-		};
-
-		template <EVENTS T>
-		struct EventImpl : public Event<static_cast<int>(T)> {};
-	};
-
 
 	// State of the loss based estimate, which can be either increasing/decreasing
 	// when network is loss limited, or equal to the delay based estimate.
@@ -54,36 +37,52 @@ namespace webrtc
 		kDelayBasedEstimate = 2
 	};
 
+		template <int T>
+		struct LossEvent {};
 
-	template<>
-	struct Event<LOSS_EVENTS::INSTANT_LOSS>
-	{
-		struct Args
-		{
-			double average_loss;
-		};
-	};
+		struct LOSS_EVENTS {
+			enum EVENTS
+			{
+				INSTANT_LOSS,
+				INHERENT_LOSS,
+				OBSERVATION,
+				NUM_EVENT_TYPES, // This must be last, it's a trick for counting the number
+												 // of enum elements.
+			};
 
-	template<>
-	struct Event<LOSS_EVENTS::INHERENT_LOSS>
-	{
-		struct Args
-		{
-			double inherent_loss;
+			template <EVENTS T>
+			struct EventImpl : public LossEvent<static_cast<int>(T)> {};
 		};
-	};
 
-	template<>
-	struct Event<LOSS_EVENTS::OBSERVATION>
-	{
-		struct Args
+		template<>
+		struct LossEvent<LOSS_EVENTS::INSTANT_LOSS>
 		{
-			int num_packets;
-			int num_lost_packets;
-			int num_received_packets;
-			DataRate sending_rate;
+			struct Args
+			{
+				double average_loss;
+			};
 		};
-	};
+
+		template<>
+		struct LossEvent<LOSS_EVENTS::INHERENT_LOSS>
+		{
+			struct Args
+			{
+				double inherent_loss;
+			};
+		};
+
+		template<>
+		struct LossEvent<LOSS_EVENTS::OBSERVATION>
+		{
+			struct Args
+			{
+				int num_packets;
+				int num_lost_packets;
+				int num_received_packets;
+				DataRate sending_rate;
+			};
+		};
 
 	class LossBasedBweV2
 	{

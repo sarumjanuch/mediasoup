@@ -9,7 +9,7 @@
  */
 
 #define MS_CLASS "webrtc::DelayBasedBwe"
-// #define MS_LOG_DEV_LEVEL 3
+#define MS_LOG_DEV_LEVEL 3
 
 #include "modules/congestion_controller/goog_cc/delay_based_bwe.h"
 #include "modules/congestion_controller/goog_cc/trendline_estimator.h"
@@ -178,6 +178,10 @@ void DelayBasedBwe::IncomingPacketFeedback(const PacketResult& packet_feedback,
                                     packet_feedback.sent_packet.send_time.ms(),
                                     packet_feedback.receive_time.ms(),
                                     packet_size.bytes(), calculated_deltas);
+	delay_detector_for_packet->events.Subscribe<TRENDLINE_EVENTS::SLOPE_UPDATE>(
+		[](const auto& args) {
+			MS_DEBUG_DEV("Slope is %f, R squared is %f", args.slope, args.r_squared);
+	});
 }
 
 DataRate DelayBasedBwe::TriggerOveruse(Timestamp at_time,

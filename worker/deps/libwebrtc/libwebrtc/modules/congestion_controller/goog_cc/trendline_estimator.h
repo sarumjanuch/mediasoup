@@ -10,6 +10,7 @@
 #ifndef MODULES_CONGESTION_CONTROLLER_GOOG_CC_TRENDLINE_ESTIMATOR_H_
 #define MODULES_CONGESTION_CONTROLLER_GOOG_CC_TRENDLINE_ESTIMATOR_H_
 
+#include "EventEmitter.hpp"
 #include "api/network_state_predictor.h"
 #include "api/transport/webrtc_key_value_config.h"
 #include "modules/congestion_controller/goog_cc/delay_increase_detector_interface.h"
@@ -17,10 +18,11 @@
 #include "rtc_base/constructor_magic.h"
 #include "rtc_base/experiments/struct_parameters_parser.h"
 
+#include <deque>
 #include <stddef.h>
 #include <stdint.h>
-#include <deque>
 #include <utility>
+
 
 namespace webrtc {
 
@@ -50,6 +52,7 @@ struct TrendlineEstimatorSettings {
 
 class TrendlineEstimator : public DelayIncreaseDetectorInterface {
  public:
+	 EventEmitter<TRENDLINE_EVENTS> events;
   TrendlineEstimator(const WebRtcKeyValueConfig* key_value_config,
                      NetworkStatePredictor* network_state_predictor);
   // |window_size| is the number of points required to compute a trend line.
