@@ -57,10 +57,10 @@ public:
 	void Emit(const typename HandlerStorage<T>::EventArgsType& args)
 	{
 		auto handler = handlers_[static_cast<std::size_t>(T)].get();
-		if (handler) {
+		if (handler)
+		{
 			reinterpret_cast<HandlerStorage<T>*>(handler)->handler_(args);
 		}
-
 	}
 
 	std::array<std::unique_ptr<HandlerStorageBase>, static_cast<std::size_t>(EVENTS::NUM_EVENT_TYPES)> handlers_;
