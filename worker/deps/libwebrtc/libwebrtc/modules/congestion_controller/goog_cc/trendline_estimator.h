@@ -52,7 +52,6 @@ struct TrendlineEstimatorSettings {
 
 class TrendlineEstimator : public DelayIncreaseDetectorInterface {
  public:
-	 EventEmitter<TRENDLINE_EVENTS> events;
   TrendlineEstimator(const WebRtcKeyValueConfig* key_value_config,
                      NetworkStatePredictor* network_state_predictor);
   // |window_size| is the number of points required to compute a trend line.

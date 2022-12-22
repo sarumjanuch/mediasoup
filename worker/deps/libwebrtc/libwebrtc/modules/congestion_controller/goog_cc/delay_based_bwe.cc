@@ -178,7 +178,7 @@ void DelayBasedBwe::IncomingPacketFeedback(const PacketResult& packet_feedback,
                                     packet_feedback.sent_packet.send_time.ms(),
                                     packet_feedback.receive_time.ms(),
                                     packet_size.bytes(), calculated_deltas);
-	delay_detector_for_packet->events.Subscribe<TRENDLINE_EVENTS::SLOPE_UPDATE>(
+	delay_detector_for_packet->Subscribe<TRENDLINE_EVENTS::SLOPE_UPDATE>(
 		[](const auto& args) {
 			MS_DEBUG_DEV("Slope is %f, R squared is %f", args.slope, args.r_squared);
 	});

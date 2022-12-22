@@ -16,7 +16,6 @@
 #include <stdint.h>
 
 namespace webrtc {
-
 	template <int T>
 	struct TrendlineEvent {};
 	struct TRENDLINE_EVENTS {
@@ -37,10 +36,9 @@ namespace webrtc {
 			double r_squared;
 		};
 	};
+class DelayIncreaseDetectorInterface: public EventEmitter<TRENDLINE_EVENTS>{
 
-class DelayIncreaseDetectorInterface {
  public:
-	 EventEmitter<TRENDLINE_EVENTS> events;
   DelayIncreaseDetectorInterface() {}
   virtual ~DelayIncreaseDetectorInterface() {}
 
