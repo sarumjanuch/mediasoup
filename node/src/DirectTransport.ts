@@ -217,7 +217,7 @@ export class DirectTransport<
 	/**
 	 * Send RTCP packet.
 	 */
-	sendRtcp(rtcpPacket: Buffer) {
+	sendRtcp(rtcpPacket: Buffer): void {
 		if (!Buffer.isBuffer(rtcpPacket)) {
 			throw new TypeError('rtcpPacket must be a Buffer');
 		}

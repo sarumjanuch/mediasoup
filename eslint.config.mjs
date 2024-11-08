@@ -145,6 +145,7 @@ const config = tsEslint.config(
 			'@typescript-eslint/consistent-type-definitions': 0,
 			// Sorry, we need many `any` usage.
 			'@typescript-eslint/no-explicit-any': 0,
+			'@typescript-eslint/explicit-function-return-type': 2,
 			'@typescript-eslint/no-unsafe-member-access': 0,
 			'@typescript-eslint/no-unsafe-assignment': 0,
 			'@typescript-eslint/no-unsafe-call': 0,

@@ -505,7 +505,7 @@ export class Producer<
 	/**
 	 * Send RTP packet (just valid for Producers created on a DirectTransport).
 	 */
-	send(rtpPacket: Buffer) {
+	send(rtpPacket: Buffer): void {
 		if (!Buffer.isBuffer(rtpPacket)) {
 			throw new TypeError('rtpPacket must be a Buffer');
 		}
