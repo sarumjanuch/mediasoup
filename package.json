@@ -101,7 +101,7 @@
 	"dependencies": {
 		"@types/ini": "^4.1.1",
 		"debug": "^4.4.0",
-		"flatbuffers": "^24.3.25",
+		"flatbuffers": "^24.12.23",
 		"h264-profile-level-id": "^2.0.0",
 		"ini": "^5.0.0",
 		"node-fetch": "^3.3.2",
@@ -127,6 +127,6 @@
 		"sctp": "^1.0.0",
 		"ts-jest": "^29.2.5",
 		"typescript": "^5.7.2",
-		"typescript-eslint": "^8.18.1"
+		"typescript-eslint": "^8.18.2"
 	}
 }
