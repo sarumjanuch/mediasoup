@@ -19,10 +19,7 @@ export type * from './rtpStreamStatsTypes';
 export type * from './sctpParametersTypes';
 export type * from './srtpParametersTypes';
 export type * from './scalabilityModesTypes';
-
-// TODO: Here we are exporting real classes rather than types. This should
-// be exported somehow else rather than in mediasoup.types namespace.
-export * from './errors';
+export type * from './errors';
 
 type Only<T, U> = {
 	[P in keyof T]: T[P];
